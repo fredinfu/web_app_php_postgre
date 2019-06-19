@@ -6,7 +6,7 @@
 	$action = isset($_GET["action"]) ? $_GET["action"] : (isset($_POST["action"]) ? $_POST["action"] : "");
 
 	switch ($action) {
-		
+
 		case 'add_motivo':
 
 			$des_motivo = isset($_GET["des_motivo"]) 	? $_GET["des_motivo"] 	: (isset($_POST["des_motivo"]) 	? $_POST["des_motivo"] : "");
@@ -31,8 +31,8 @@
 			  exit;
 			}
 
-			$result = json_encode(array('success'=>true, 'results'=>array("motivo" => $max['motivo'])));
-			echo $result;
+			$response = json_encode(array('success'=>true, 'results'=>array("motivo" => $max['motivo'])));
+			echo $response;
 			
 			break;
 		
@@ -49,13 +49,40 @@
 				$results[] = $row;
 			}
 
-			$result = json_encode(array('success'=>true, 'results'=>$results));
-			echo $result;
+			$response = json_encode(array('success'=>true, 'results'=>$results));
+			echo $response;
 			
 			break;
 
-		case 'a3':
-			echo "A3.\n";
+		case 'update_motivo':
+			$motivo 	= isset($_GET["motivo"]) 		? $_GET["motivo"] 		: (isset($_POST["motivo"]) 		? $_POST["motivo"] : "");
+			$des_motivo = isset($_GET["des_motivo"]) 	? $_GET["des_motivo"] 	: (isset($_POST["des_motivo"]) 	? $_POST["des_motivo"] : "");
+			$estado 	= isset($_GET["estado"]) 		? $_GET["estado"] 		: (isset($_POST["estado"]) 		? $_POST["estado"] : "");
+			$tipo 		= isset($_GET["tipo"]) 			? $_GET["tipo"] 		: (isset($_POST["tipo"]) 		? $_POST["tipo"] : "");
+
+			$query = "UPDATE motivos_es_gt SET 				 
+				des_motivo 	= '$des_motivo',
+				estado 		= '$estado',
+				tipo 		= '$tipo'
+				WHERE motivo = $motivo
+			";
+
+			$result = pg_query($con_postgres, $query);
+
+			if (!$result) {
+			  echo json_encode(array('success'=>false, 'message'=>'SERVER_ERROR'));
+			  exit;
+			}
+
+			$response = json_encode(array('success'=>true, 'results'=>array(
+				"motivo" 		=> $motivo,
+				"des_motivo" 	=> $des_motivo,
+				"estado" 		=> $estado,
+				"tipo" 			=> $tipo,
+				))
+			);
+			echo $response;
+			
 			break;
 
 
