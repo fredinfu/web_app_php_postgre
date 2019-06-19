@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource, MatPaginator, MatSort, MatStep, MatStepper } from '@angular/material';
 import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
+import { ApiService } from '../api.service';
 
 @Component({
   selector: 'app-motivos',
@@ -15,26 +16,7 @@ export class MotivosPage implements OnInit {
   user: any;
   ionite: any;
   motivosFiltered: any[] = [];
-  dummyData: any[] = [
-    {
-      motivo: 0,
-      des_motivo: 'ASDF',
-      estado: 'F',
-      tipo: 'T'
-    },
-    {
-      motivo: 1,
-      des_motivo: 'CSDF',
-      estado: 'V',
-      tipo: 'T'
-    },
-    {
-      motivo: 2,
-      des_motivo: 'GSDF',
-      estado: 'F',
-      tipo: 'K'
-    }
-  ];
+  dummyData: any[] = [];
 
   dataSource = new MatTableDataSource<any>();
 
@@ -43,9 +25,10 @@ export class MotivosPage implements OnInit {
 
   constructor(
     private router: Router,
-    private alertCtrl: AlertController
+    private alertCtrl: AlertController,
+    private api: ApiService
   ) {
-    
+
     this.getMotivos();
   }
 
@@ -54,10 +37,18 @@ export class MotivosPage implements OnInit {
   }
 
   getMotivos() {
-    this.motivosFiltered = this.dummyData;
-    this.dataSource.data = this.motivosFiltered;
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
+    this.api.get('get_motivos', { }).subscribe(s => {
+      const response = s as any;
+      if(response.success) {
+        this.dummyData = response.results;
+        this.motivosFiltered = response.results;
+        this.dataSource.data = this.motivosFiltered;
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+
+      }
+    });
+
   }
 
   editMotivo(motivo){
