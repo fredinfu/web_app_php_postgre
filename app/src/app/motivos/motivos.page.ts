@@ -14,6 +14,7 @@ export class MotivosPage implements OnInit {
 
   user: any;
   ionite: any;
+  motivosFiltered: any[] = [];
   dummyData: any[] = [
     {
       motivo: 0,
@@ -53,7 +54,8 @@ export class MotivosPage implements OnInit {
   }
 
   getMotivos() {
-    this.dataSource.data = this.dummyData;
+    this.motivosFiltered = this.dummyData;
+    this.dataSource.data = this.motivosFiltered;
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
   }
@@ -63,12 +65,12 @@ export class MotivosPage implements OnInit {
     this.router.navigate(['/motivo-update']);
   }
 
-  async removeMotivo(motivo){
+  async removeMotivo(motivo) {
     this.confirmRemove();
   }
 
-  async confirmRemove(){
-    let alert = await this.alertCtrl.create({
+  async confirmRemove() {
+    const alert = await this.alertCtrl.create({
       message: '¿Estás seguro en eliminar el motivo?',
       buttons: [
           {
@@ -91,6 +93,21 @@ export class MotivosPage implements OnInit {
 
   addMotivo(){
     this.router.navigate(['/motivo-add']);
+  }
+
+  filterMotivos(des_motivo){
+    this.motivosFiltered = this.dummyData.filter( (f) => f.des_motivo.toLowerCase().indexOf(des_motivo.toLowerCase()) >= 0 );
+    this.dataSource.data = this.motivosFiltered;
+  }
+
+  orderByDesmotivoAsc() {
+    this.motivosFiltered = this.motivosFiltered.sort((a, b) => (a.des_motivo < b.des_motivo ? -1 : 1));
+    this.dataSource.data = this.motivosFiltered;
+  }
+
+  orderByDesmotivoDesc() {
+    this.motivosFiltered = this.motivosFiltered.sort((a, b) => (a.des_motivo > b.des_motivo ? -1 : 1));
+    this.dataSource.data = this.motivosFiltered;
   }
 
 }
