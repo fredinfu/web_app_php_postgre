@@ -81,9 +81,32 @@
 				"tipo" 			=> $tipo,
 				))
 			);
+
 			echo $response;
 			
 			break;
+
+		case 'delete_motivo':
+
+			$motivo 	= isset($_GET["motivo"]) 		? $_GET["motivo"] 		: (isset($_POST["motivo"]) 		? $_POST["motivo"] : "");
+
+			$query = "DELETE FROM motivos_es_gt WHERE motivo = $motivo";
+
+			$result = pg_query($con_postgres, $query);
+
+			if (!$result) {
+			  echo json_encode(array('success'=>false, 'message'=>'SERVER_ERROR'));
+			  exit;
+			}
+
+			$response = json_encode(array('success'=>true, 'results'=>array(
+				"message" 		=> "motivo eliminado correctamente"
+				))
+			);
+			
+			echo $response;
+			
+			break;			
 
 
 		default:
