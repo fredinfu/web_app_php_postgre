@@ -33,6 +33,10 @@ export class MotivosPage implements OnInit {
   }
 
   ngOnInit() {
+
+  }
+
+  ionViewWillEnter() {
     this.getMotivos();
   }
 
@@ -57,10 +61,10 @@ export class MotivosPage implements OnInit {
   }
 
   async removeMotivo(motivo) {
-    this.confirmRemove();
+    this.confirmRemove(motivo);
   }
 
-  async confirmRemove() {
+  async confirmRemove(motivo) {
     const alert = await this.alertCtrl.create({
       message: '¿Estás seguro en eliminar el motivo?',
       buttons: [
@@ -73,6 +77,29 @@ export class MotivosPage implements OnInit {
           {
               text: 'Aceptar',
               handler: () => {
+                this.api.get('delete_motivo', motivo ).subscribe(s => {
+                  const response = s as any;
+                  if (response.success) {
+                    this.getMotivos();
+                    this.confirmDialog();
+                  }
+                });
+              }
+          }
+      ]
+    });
+
+    await alert.present();
+  }
+
+
+  async confirmDialog() {
+    const alert = await this.alertCtrl.create({
+      message: 'Motivo eliminado correctamente!',
+      buttons: [
+          {
+              text: 'Cerrar',
+              handler: () => {
 
               }
           }
@@ -82,7 +109,7 @@ export class MotivosPage implements OnInit {
     await alert.present();
   }
 
-  addMotivo(){
+  addMotivo() {
     this.router.navigate(['/motivo-add']);
   }
 

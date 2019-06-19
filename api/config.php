@@ -1,8 +1,8 @@
 <?php
 	$host 		= 'localhost';
 	$dbname 	= 'test';
-	$user 		= 'postgres';
-	$password 	= '1234';
+	$user 		= 'root';
+	$password 	= 'root';
 	
 
 	$con_postgres = pg_connect("host=$host dbname=$dbname user=$user password='$password'");
