@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource, MatPaginator, MatSort, MatStep, MatStepper } from '@angular/material';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-motivos',
@@ -38,7 +39,9 @@ export class MotivosPage implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
-  constructor() {
+  constructor(
+    private router: Router
+  ) {
     
     this.getMotivos();
   }
@@ -59,6 +62,10 @@ export class MotivosPage implements OnInit {
 
   removeMotivo(motivo){
     alert(motivo.motivo);
+  }
+
+  addMotivo(){
+    this.router.navigate(['/motivo-add']);
   }
 
 }
