@@ -8,7 +8,7 @@ import { MatTableDataSource, MatPaginator, MatSort, MatStep, MatStepper } from '
 })
 export class MotivosPage implements OnInit {
 
-  displayedColumns: string[] = ['motivo', 'des_motivo', 'estado', 'tipo'];
+  displayedColumns: string[] = ['edit', 'motivo', 'des_motivo', 'estado', 'tipo', 'remove'];
 
   user: any;
   ionite: any;
@@ -39,6 +39,7 @@ export class MotivosPage implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
 
   constructor() {
+    
     this.getMotivos();
   }
 
@@ -48,6 +49,16 @@ export class MotivosPage implements OnInit {
 
   getMotivos() {
     this.dataSource.data = this.dummyData;
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+  }
+
+  editMotivo(motivo){
+    //alert(JSON.stringify(motivo));
+  }
+
+  removeMotivo(motivo){
+    alert(motivo.motivo);
   }
 
 }
