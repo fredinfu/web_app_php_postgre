@@ -3,7 +3,9 @@
 1. Development
 
 Para development correr comandos:
+
 npm install
+
 ionic serve
 
 Requisitos:
