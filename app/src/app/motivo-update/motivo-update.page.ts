@@ -12,6 +12,7 @@ export class MotivoUpdatePage implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    this.motivo = JSON.parse(localStorage.motivoActual);
   }
 
 }
