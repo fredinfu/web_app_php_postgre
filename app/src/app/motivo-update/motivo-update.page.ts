@@ -7,7 +7,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MotivoUpdatePage implements OnInit {
 
-  motivo: any;
+  motivo: any = {};
 
   constructor() { }
 

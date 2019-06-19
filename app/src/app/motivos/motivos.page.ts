@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource, MatPaginator, MatSort, MatStep, MatStepper } from '@angular/material';
 import { Router } from '@angular/router';
+import { AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-motivos',
@@ -40,7 +41,8 @@ export class MotivosPage implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
 
   constructor(
-    private router: Router
+    private router: Router,
+    private alertCtrl: AlertController
   ) {
     
     this.getMotivos();
@@ -57,11 +59,34 @@ export class MotivosPage implements OnInit {
   }
 
   editMotivo(motivo){
-    //alert(JSON.stringify(motivo));
+    localStorage.motivoActual = JSON.stringify(motivo);
+    this.router.navigate(['/motivo-update']);
   }
 
-  removeMotivo(motivo){
-    alert(motivo.motivo);
+  async removeMotivo(motivo){
+    this.confirmRemove();
+  }
+
+  async confirmRemove(){
+    let alert = await this.alertCtrl.create({
+      message: '¿Estás seguro en eliminar el motivo?',
+      buttons: [
+          {
+              text: 'Cancelar',
+              handler: () => {
+                  console.log('Cancel clicked');
+              }
+          },
+          {
+              text: 'Aceptar',
+              handler: () => {
+
+              }
+          }
+      ]
+    });
+
+    await alert.present();
   }
 
   addMotivo(){
