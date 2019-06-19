@@ -7,15 +7,15 @@
 
 	switch ($action) {
 		case 'a1':
-			echo "An error occurred.\n";
+			echo json_encode(array('success'=>false, 'message'=>'SERVER_ERROR'));
 			break;
 		
-		case 'a2':
+		case 'get_motivos':
 			$results = array();
 			$result = pg_query($con_postgres, "SELECT * FROM motivos_es_gt ");
 
 			if (!$result) {
-			  echo "An error occurred.\n";
+			  echo json_encode(array('success'=>false, 'message'=>'SERVER_ERROR'));
 			  exit;
 			}
 
@@ -23,7 +23,8 @@
 				$results[] = $row;
 			}
 
-			echo json_encode($results);
+			$result = json_encode(array('success'=>true, 'results'=>$results));
+			echo $result;
 			
 			break;
 
@@ -33,7 +34,7 @@
 
 
 		default:
-			# code...
+			echo json_encode(array('success'=>false, 'message'=>'BAD_REQUEST'));
 			break;
 	}
 
